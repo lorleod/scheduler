@@ -37,8 +37,6 @@ export function getInterview(state, interview) {
     return null;
   }
 
-  console.log("STATE: ", state);
-
   return ({
     "student": interview.student,
     "interviewer": {
