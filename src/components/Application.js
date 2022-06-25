@@ -5,7 +5,7 @@ import "components/Application.scss";
 
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay } from "../helpers/selectors.jsx";
+import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "../helpers/selectors.jsx";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -15,7 +15,7 @@ export default function Application(props) {
     interviewers: {},
   });
 
-  const dailyAppointments = getAppointmentsForDay(state, state.day);
+
 
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
@@ -35,31 +35,35 @@ export default function Application(props) {
     })
   }, []);
 
-  // useEffect(() => {
-  //   Promise.all([
-  //     axios.get("/api/days"),
-  //     axios.get("/api/appointments"),
-  //     axios.get("/api/interviewers"),
-  //   ]).then((all) => {
-  //     setState((prev) => ({
-  //       ...prev,
-  //       days: all[0].data,
-  //       appointments: all[1].data,
-  //       interviewers: all[2].data,
-  //     }));
-  //     console.log("state.interviewers: ", state.interviewers);
-  //   }, [state.interviewers]);
-  // });
+
+  function bookInterview(id, interview) {
+    console.log("BOOKINTERVIEW: ", id, interview);
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
 
 
 
+    setState({...state, appointments})
+  }
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
+  console.log("dailyInterviewers: ", dailyInterviewers);
   // convert appointments object to array then map to jsx
   const appointmentsArray = dailyAppointments.map((appointment) => {
-    return <Appointment key={appointment.id} {...appointment} />;
+    const interview = getInterview(state, appointment.interview);
+
+    return <Appointment {...appointment} interviewers={dailyInterviewers} key={appointment.id} bookInterview={bookInterview}/>;
   });
 
-  // add a final appointment to end the list
-  // appointmentsArray.push();
 
   return (
     <main className="layout">
