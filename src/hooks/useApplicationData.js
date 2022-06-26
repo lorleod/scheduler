@@ -29,6 +29,34 @@ export function useApplicationData() {
   //Function passed down in props to DayListItem to change day in state when a day (ie tuesday) is clicked on. Takes in day.
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
+  //day, "up" or "down"
+  function updateSpots(upOrDown) {
+    let spotChange = 1;
+    if (upOrDown === "down") {
+      spotChange = -1;
+    }
+
+    for (let day of state.days) {
+      if (day.name === state.day) {
+        const updatedDay = {
+            ...day,
+            spots: day.spots + spotChange,
+          };
+        const updatedDays = [
+          ...state.days
+        ]
+        updatedDays[state.days.indexOf(day)] = updatedDay;
+        console.log("state.days.indexOf(day): ", state.days.indexOf(day));
+        console.log("updatedDays: ", updatedDays);
+        setState((prev) => ({
+          ...prev,
+          days: updatedDays,
+        }));
+
+      }
+    }
+  }
+
   // Passed as prop down to Appointment then Form. Called when new appointmnet made.
   // Builds new interview object, then updates database and then updates state
   // Takes in appointment id and interview object
@@ -43,11 +71,14 @@ export function useApplicationData() {
       [id]: appointment,
     };
 
-    return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+    return axios.put(`/api/appointments/${id}`, appointment)
+    .then(() => {
       setState(() => ({
         ...state,
         appointments,
       }));
+
+      updateSpots("down");
     })
   }
 
@@ -70,6 +101,7 @@ export function useApplicationData() {
         ...state,
         appointments,
       }));
+      updateSpots("up");
     })
   }
 

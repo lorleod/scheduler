@@ -31,7 +31,8 @@ export default function Application(props) {
     // What was this function for??
     // const interview = getInterview(state, appointment.interview);
 
-
+  console.log("state: ", state);
+  console.log("state.days", state.days);
     return (
       <Appointment
         {...appointment}
