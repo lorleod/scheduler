@@ -1,19 +1,18 @@
 # Interview Scheduler
 Interview Scheduler is a responsive single-page application built with React. Users can book, edit, or delete appointments with interviewers.
 
-Data is persisted by an API server uing a PostgreSQL database and access via over HTTP using the JSON format. Jest and Cypress tests were used through the development of the project.
+Data is persisted by an API server uing a PostgreSQL database and accessed via HTTP using the JSON format. Jest and Cypress tests were used through the development of the project.
 
 Stack: React, Webpack, Babel, Axios, Storybook, Jest, Cypress
 
 
 ## Setup
-
-Fork this repository.
-Clone your repositiroy onto your local device.
-Install dependencies with 'npm install'.
-Visit the API server repo and follow the README.md file for setup:
-["https://github.com/lighthouse-labs/scheduler-api"](https://github.com/lighthouse-labs/scheduler-api)
-
+<ol>
+  <li>Fork this repository.</li>
+  <li>Clone your repositiroy onto your local device.</li>
+  <li>Install dependencies with 'npm install'.</li>
+  <li>Visit the API server repo and follow the README.md file for setup: ["https://github.com/lighthouse-labs/scheduler-api"](https://github.com/lighthouse-labs/scheduler-api)</li>
+</ol>
 
 ## Running Webpack Development Server
 
