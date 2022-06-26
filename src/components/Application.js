@@ -5,9 +5,16 @@ import "components/Application.scss";
 
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "../helpers/selectors.jsx";
+import {
+  getAppointmentsForDay,
+  getInterviewersForDay,
+  getInterview,
+} from "../helpers/selectors.jsx";
 
+// Root level of the dom tree
 export default function Application(props) {
+
+  //Create state object for storing all DOM state date
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -15,61 +22,85 @@ export default function Application(props) {
     interviewers: {},
   });
 
-
-
+  //Function passed down in props to DayListItem to change day in state when a day (ie tuesday) is clicked on. Takes in day.
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
+  //get requests to api to populate state on first render of page
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
       axios.get("/api/appointments"),
       axios.get("/api/interviewers"),
-    ])
-    .then((all) => {
+    ]).then((all) => {
       setState((prev) => ({
         ...prev,
         days: all[0].data,
         appointments: all[1].data,
         interviewers: all[2].data,
       }));
-    })
+    });
   }, []);
 
-
+  // Passed as prop down to Appointment then Form. Called when new appointmnet made.
+  // Builds new interview object, then updates database and then updates state
+  // Takes in appointment id and interview object
   function bookInterview(id, interview) {
-    console.log("BOOKINTERVIEW: ", id, interview);
-
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: { ...interview },
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
-    return (
-      axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => {
-        setState(() => ({
-          ...state,
-          appointments
-        }));
-      })
-    )
+    return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+      setState(() => ({
+        ...state,
+        appointments,
+      }));
+    });
+  }
+
+  //Passed as prop down to Appointment then Show. Called when delete button clicked.
+  // Builds apppointment with null interview then updates database then updates state
+  // Takes in appointment id
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+      setState(() => ({
+        ...state,
+        appointments,
+      }));
+    });
   }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
-  console.log("dailyInterviewers: ", dailyInterviewers);
+
   // convert appointments object to array then map to jsx
   const appointmentsArray = dailyAppointments.map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
-
-    return <Appointment {...appointment} interviewers={dailyInterviewers} key={appointment.id} bookInterview={bookInterview}/>;
+    // const interview = getInterview(state, appointment.interview);
+    return (
+      <Appointment
+        {...appointment}
+        interviewers={dailyInterviewers}
+        key={appointment.id}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
+      />
+    );
   });
-
 
   return (
     <main className="layout">
