@@ -77,12 +77,12 @@ export default function Application(props) {
       [id]: appointment,
     };
 
-    return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+    return axios.delete(`/api/appointments/${id}`).then(() => {
       setState(() => ({
         ...state,
         appointments,
       }));
-    });
+    }).catch((res) => {console.log("res: ", res)});
   }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
@@ -90,7 +90,11 @@ export default function Application(props) {
 
   // convert appointments object to array then map to jsx
   const appointmentsArray = dailyAppointments.map((appointment) => {
+
+    // What was this function for??
     // const interview = getInterview(state, appointment.interview);
+
+
     return (
       <Appointment
         {...appointment}
@@ -98,6 +102,7 @@ export default function Application(props) {
         key={appointment.id}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
+        // interview={interview}
       />
     );
   });

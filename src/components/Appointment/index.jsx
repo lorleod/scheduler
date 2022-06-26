@@ -17,7 +17,7 @@ const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
 
-export default function Apointment(props) {
+export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -35,7 +35,7 @@ export default function Apointment(props) {
   function deleteInterview() {
     transition(DELETING);
     props.cancelInterview(props.id)
-    .then(() => transition(SHOW))
+    .then(() => transition(EMPTY))
   }
 
   return (
