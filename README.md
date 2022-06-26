@@ -11,7 +11,7 @@ Stack: React, Webpack, Babel, Axios, Storybook, Jest, Cypress
   <li>Fork this repository.</li>
   <li>Clone your repositiroy onto your local device.</li>
   <li>Install dependencies with 'npm install'.</li>
-  <li>Visit the API server repo and follow the README.md file for setup: [https://github.com/lighthouse-labs/scheduler-api](https://github.com/lighthouse-labs/scheduler-api)</li>
+  <li>Visit the API server repo and follow the README.md file for setup: <https://github.com/lighthouse-labs/scheduler-api></li>
 </ol>
 
 ## Running Webpack Development Server
