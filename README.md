@@ -32,6 +32,7 @@ npm test
 npm run storybook
 ```
 ## Dependencies
+    "node": "12",
     "axios": "^0.27.2",
     "classnames": "^2.2.6",
     "fsevents": "^1.2.9",
