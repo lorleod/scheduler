@@ -7,7 +7,6 @@ import Appointment from "./Appointment";
 import {
   getAppointmentsForDay,
   getInterviewersForDay,
-  getInterview,
 } from "../helpers/selectors.jsx";
 
 import { useApplicationData } from '../hooks/useApplicationData'
@@ -28,11 +27,6 @@ export default function Application(props) {
   // convert appointments object to array then map to jsx
   const appointmentsArray = dailyAppointments.map((appointment) => {
 
-    // What was this function for??
-    // const interview = getInterview(state, appointment.interview);
-
-  console.log("state: ", state);
-  console.log("state.days", state.days);
     return (
       <Appointment
         {...appointment}

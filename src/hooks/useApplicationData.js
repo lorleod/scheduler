@@ -29,7 +29,7 @@ export function useApplicationData() {
   //Function passed down in props to DayListItem to change day in state when a day (ie tuesday) is clicked on. Takes in day.
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
-  //day, "up" or "down"
+  //takes in "up" or "down" and increments or decrements the spots remaining in a day's state
   function updateSpots(upOrDown) {
     let spotChange = 1;
     if (upOrDown === "down") {
@@ -46,8 +46,6 @@ export function useApplicationData() {
           ...state.days
         ]
         updatedDays[state.days.indexOf(day)] = updatedDay;
-        console.log("state.days.indexOf(day): ", state.days.indexOf(day));
-        console.log("updatedDays: ", updatedDays);
         setState((prev) => ({
           ...prev,
           days: updatedDays,
