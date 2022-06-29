@@ -58,7 +58,7 @@ export function useApplicationData() {
   // Passed as prop down to Appointment then Form. Called when new appointmnet made.
   // Builds new interview object, then updates database and then updates state
   // Takes in appointment id and interview object
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, isEdit) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -76,7 +76,9 @@ export function useApplicationData() {
         appointments,
       }));
 
-      updateSpots("down");
+      if (!isEdit) {
+        updateSpots("down");
+      }
     })
   }
 

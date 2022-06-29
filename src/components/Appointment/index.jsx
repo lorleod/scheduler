@@ -29,13 +29,13 @@ export default function Appointment(props) {
   // Takes in student name and interviewer id
   // Creates new interview object, switches to SAVING
   // Calls bookInterview then switches to SHOW
-  function save(name, interviewer) {
+  function save(name, interviewer, isEdit) {
     const interview = {
       student: name,
       interviewer
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview)
+    props.bookInterview(props.id, interview, isEdit)
     .then(() => transition(SHOW))
     .catch(() => transition(ERROR_SAVE, true));
   }
@@ -45,6 +45,12 @@ export default function Appointment(props) {
     props.cancelInterview(props.id)
     .then(() => transition(EMPTY))
     .catch(() => transition(ERROR_DELETE, true));
+  }
+
+  //if editing, passes TRUE for isEdit to save and then to bookInterview to prevent spotsupdate
+  function edit(name, interviewer) {
+    const isEdit = 1;
+    save(name, interviewer, isEdit);
   }
 
   return (
@@ -71,7 +77,7 @@ export default function Appointment(props) {
         <Form
           interviewers={props.interviewers}
           onCancel={() => back()}
-          onSave={save}
+          onSave={edit}
           interviewer={props.interview.interviewer}
           student={props.interview.student}
         />
